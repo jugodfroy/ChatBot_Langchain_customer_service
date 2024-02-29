@@ -12,6 +12,11 @@ def main():
     st.header("ChatBot Free Assistance")
     st.write("by [Julien GODFROY](https://github.com/jugodfroy)", )
 
+    if "messages" not in st.session_state:
+        st.session_state.messages = [
+            # SystemMessage(content="En tant que ChatBot du service client de FREE, ton objectif est de fournir des réponses structurée, factuelles, utiles et concises aux questions des clients. Tu dois répondre en Markdown, uniquement en Français. Utilise les informations extraites des documents du service client pour répondre. Si la réponse à la question n'est pas disponible dans ta base de données, indique clairement que tu ne sais pas, sans inventer de réponse. Après avoir répondu, recommande une ou plusieurs URL pertinentes parmi celles fournies."),
+        ]
+
     ##########################################
     #                SIDEBAR                 #
     ##########################################
