@@ -36,7 +36,7 @@ def main():
                     "Entrez votre clé API Mistral :", type="password")
             user_input = st.text_area(
                 "Posez votre question ici :",
-                max_chars=100,
+                max_chars=150,
                 help="Keep your question clear and concise for the best results.",
                 placeholder="Comment obtenir le numéro RIO de ma ligne mobile ?"
             )
