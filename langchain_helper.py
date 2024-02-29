@@ -69,13 +69,16 @@ def load_vectorized_data(df, model="all-MiniLM-L12-v2", recreate=False):
 def search_similar_documents(db, query, k=2):
     """Search for similar documents in the vectorized data. Only return the k most similar documents, with a score above 1.1."""
     similar_documents = db.similarity_search_with_score(
-        query, k)
+        query, 2)
     print("\nRAW similar documents : \n", similar_documents)
+    output = []
     for i, doc in enumerate(similar_documents):
-        if doc[1] > 1.1:
-            similar_documents[i] = "Vide"
-
-    return similar_documents
+        if doc[1] > 1.2:
+            output.append("Vide")
+        else:
+            output.append(doc[0].metadata)
+    # print(output)
+    return output
 
 
 # STEP 4 : Chatting with the LLM
@@ -125,7 +128,8 @@ def query(question, similar_documents, previous_doc, conversation, model='mistra
     if API_KEY != "":  # local LLM
         if conversation == "":
             prompt = PromptTemplate.from_template(init_prompt_template)
-            prompt = prompt.format(question=question, docs=similar_documents)
+            prompt = prompt.format(
+                question=question, docs=similar_documents)
         else:
             prompt = PromptTemplate.from_template(base_prompt_template)
             prompt = prompt.format(question=question,
