@@ -73,7 +73,7 @@ The Free Customer Service Chatbot showcases the integration of state-of-the-art 
 
 ## USEFUL LINKS
 
-[Langchain documentation](https://python.langchain.com/docs)
-[MistralAPI documentation](https://docs.mistral.ai/)
-[Chromadb doc](https://docs.trychroma.com/)
-[Ollama available local LLMs](https://ollama.com/library)
+- [Langchain documentation](https://python.langchain.com/docs)
+- [MistralAPI documentation](https://docs.mistral.ai/)
+- [Chromadb doc](https://docs.trychroma.com/)
+- [Ollama available local LLMs](https://ollama.com/library)
