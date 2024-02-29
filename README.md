@@ -62,8 +62,7 @@ This project develops a PoC of a customer service chatbot specifically designed 
 
 - **LLM Selection:** Choose between leveraging local open-source models with Ollama or using the Mistral API for online models, depending on availability and performance preferences.
 - **GPU Acceleration:** Option to utilize GPU acceleration for local model inference, enhancing performance where applicable.
-![Online_ctrl_panel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/47e00261-b474-4ad4-804d-3e3631c52b17)![Offline_ctrl_pannel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/969b1908-9cde-4f23-a7b5-aaaf22232156)
-
+  ![Online_ctrl_panel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/47e00261-b474-4ad4-804d-3e3631c52b17)![Offline_ctrl_pannel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/969b1908-9cde-4f23-a7b5-aaaf22232156)
 
 ## Usage
 
@@ -77,5 +76,6 @@ The Free Customer Service Chatbot showcases the integration of state-of-the-art 
 
 - [Langchain documentation](https://python.langchain.com/docs)
 - [MistralAPI documentation](https://docs.mistral.ai/)
-- [Chromadb doc](https://docs.trychroma.com/)
+- [Chromadb documentation](https://docs.trychroma.com/)
 - [Ollama available local LLMs](https://ollama.com/library)
+- [Streamlit documentation](https://docs.streamlit.io/)
