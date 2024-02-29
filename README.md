@@ -4,6 +4,8 @@
 
 This project develops a PoC of a customer service chatbot specifically designed for the telecommunications operator Free. It leverages a dataset consisting of articles from the "customer service" section of Free's website, providing the knowledge base for answering user queries. The chatbot utilizes technologies such as LangChain (python) for natural language processing, ChromaDB for vectorization of documents, and the choice between local open-source models (via Ollama) and online open-source models available through the Mistral API for generating responses. This chatbot is its ability to conduct complete conversations with users, keeping track of the conversation history to provide context-aware responses.
 
+![Main_screenshot](./img/main_screen.png)
+
 ## Features
 
 - **SQLite Database Integration:** Uses an SQLite database to store customer service articles, enabling efficient data retrieval.
@@ -62,7 +64,6 @@ This project develops a PoC of a customer service chatbot specifically designed 
 
 - **LLM Selection:** Choose between leveraging local open-source models with Ollama or using the Mistral API for online models, depending on availability and performance preferences.
 - **GPU Acceleration:** Option to utilize GPU acceleration for local model inference, enhancing performance where applicable.
-  ![Online_ctrl_panel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/47e00261-b474-4ad4-804d-3e3631c52b17)![Offline_ctrl_pannel](https://github.com/jugodfroy/ChatBot_Langchain_customer_service/assets/79590825/969b1908-9cde-4f23-a7b5-aaaf22232156)
 
 ## Usage
 
