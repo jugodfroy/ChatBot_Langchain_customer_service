@@ -43,8 +43,9 @@ def prepare_df(file):
 
 # STEP 2 : Create vectorized data (chromadb)
 
+# recreate=True to fully recreate the db
 def load_vectorized_data(df, model="all-MiniLM-L12-v2", recreate=False):
-
+    """Load the vectorized data from the disk if it exists, otherwise create it from the dataframe and save it on disk."""
     embedding_function = SentenceTransformerEmbeddings(
         model_name=model)  # check other models here : https://www.sbert.net/docs/pretrained_models.html
     if recreate:
@@ -59,14 +60,14 @@ def load_vectorized_data(df, model="all-MiniLM-L12-v2", recreate=False):
         Chroma.from_documents(
             df_document, embedding_function, persist_directory="./data/vectorized_db")
         return db
-    else:
+    else:  # if no need to recreate the db, just load it from disk
         return Chroma(persist_directory="./data/vectorized_db",
                       embedding_function=embedding_function)
 
 
 # STEP 3 : Search simalirar documents
 def search_similar_documents(db, query, k=2):
-
+    """Search for similar documents in the vectorized data. Only return the k most similar documents, with a score above 1.1."""
     similar_documents = db.similarity_search_with_score(
         query, k)
     print("\nRAW similar documents : \n", similar_documents)
@@ -79,6 +80,7 @@ def search_similar_documents(db, query, k=2):
 
 # STEP 4 : Chatting with the LLM
 def query(question, similar_documents, previous_doc, conversation, model='mistral-openorca:7b-q5_K_S', gpu=False, API_KEY=""):
+    """Query the LLM with the question and the similar documents, and return the response. If the conversation has already started, also provide the previous document and the conversation history."""
     # Load the LLM locally
     if API_KEY == "":
         if gpu:
@@ -118,7 +120,7 @@ def query(question, similar_documents, previous_doc, conversation, model='mistra
     Réponse :
     """
 
-    # Create the prompt from a defined template (different if it's the first question or not)
+    # Create the prompt from a defined template (different if it's the first question or not and if the model in local or API)
 
     if API_KEY != "":  # local LLM
         if conversation == "":
@@ -163,6 +165,7 @@ def query(question, similar_documents, previous_doc, conversation, model='mistra
 
 
 def flatten_conversation(messages):
+    """Flatten the conversation from document type to string."""
     # Convert the messages to strings
     messages_str = [str(message) for message in messages]
 
@@ -185,4 +188,4 @@ def main(question, conversation='', previous_doc=["Vide"], llm='mistral-openorca
 
 
 if __name__ == "__main__":
-    print(main("Comment obtenir mon numéro RIO ?")[0])
+    print(main("Comment obtenir le numéro RIO de ma ligne mobile ?")[0])

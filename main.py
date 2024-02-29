@@ -9,13 +9,12 @@ def main():
         page_title="Iliad technical assessment",
         page_icon="🤖",
     )
-    st.header("ChatBot Freebox")
+    st.header("ChatBot Free Assistance")
     st.write("by [Julien GODFROY](https://github.com/jugodfroy)", )
 
-    if "messages" not in st.session_state:
-        st.session_state.messages = [
-            # SystemMessage(content="En tant que ChatBot du service client de FREE, ton objectif est de fournir des réponses structurée, factuelles, utiles et concises aux questions des clients. Tu dois répondre en Markdown, uniquement en Français. Utilise les informations extraites des documents du service client pour répondre. Si la réponse à la question n'est pas disponible dans ta base de données, indique clairement que tu ne sais pas, sans inventer de réponse. Après avoir répondu, recommande une ou plusieurs URL pertinentes parmi celles fournies."),
-        ]
+    ##########################################
+    #                SIDEBAR                 #
+    ##########################################
 
     with st.sidebar:
         img = st.image("img/Logo_iliad.png", width=50)
@@ -44,32 +43,38 @@ def main():
 
         reset_btn = st.button("Reset press 2 times")
 
+    ##########################################
+    #                MAIN CORE               #
+    ##########################################
     previous_doc = []
     message("Bonjour, je suis l'agent conversationnel de Free. Comment puis-je vous aider ?", is_user=False)
 
+    # If the user has submitted a question
     if submit_btn and user_input != "":
         with st.spinner("Je réflechis..."):
-            if mistral == 'No, run locally':
+            if mistral == 'No, run locally':    # run with local LLM
                 response, doc = lch.main(
                     user_input, st.session_state.messages, previous_doc, llm, gpu)
             else:
-                print("\nAPI_KEY : \n", API_KEY)
-                response, doc = lch.main(
+                response, doc = lch.main(       # run with Mistral API
                     user_input, st.session_state.messages, previous_doc=previous_doc, llm=llm, API_KEY=API_KEY)
             st.session_state.messages.append(HumanMessage(content=user_input))
+
+            # to deal with different response types depending on the type of LLM (local, or api)
             if mistral == 'No, run locally':
                 st.session_state.messages.append(
                     AIMessage(content=response))
             else:
                 st.session_state.messages.append(
                     AIMessage(content=response.content))
-        previous_doc = doc
+        previous_doc = doc  # keep track of the previous doc for the next query
 
+    # Refresh the chat area
     messages = st.session_state.get('messages', [])
     for i, msg in enumerate(messages):
-        if i % 2 == 0:
+        if i % 2 == 0:  # user msg
             message(msg.content, is_user=True, key="user_"+str(i))
-        else:
+        else:        # bot msg
             message(msg.content, is_user=False, key="bot_"+str(i))
 
     if reset_btn:
