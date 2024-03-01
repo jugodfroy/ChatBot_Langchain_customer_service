@@ -35,14 +35,14 @@ def main():
                 gpu = st.checkbox("Utiliser le GPU (CUDA) (pas testé)", False)
             else:
                 llm = st.selectbox("Choisissez un LLM online:", [
-                    "open-mistral-7b", "open-mixtral-8x7b"])
+                    "open-mistral-7b", "open-mixtral-8x7b"])  # add mistral-small-latest, mistral-medium-latest, mistral-large-latest to unlock the non-open source mistral LLM
                 API_KEY = st.text_input(
                     "Entrez votre clé API Mistral :", type="password")
             user_input = st.text_area(
                 "Posez votre question ici :",
                 max_chars=150,
                 help="Keep your question clear and concise for the best results.",
-                placeholder="Comment obtenir le numéro RIO de ma ligne mobile ?"
+                placeholder="Comment obtenir le code RIO de ma ligne mobile ?"
             )
             submit_btn = st.form_submit_button("Envoyer")
 
@@ -51,7 +51,8 @@ def main():
     ##########################################
     #                MAIN CORE               #
     ##########################################
-    previous_doc = []
+    if 'previous_doc' not in st.session_state:
+        st.session_state['previous_doc'] = ""
     message("Bonjour, je suis l'agent conversationnel de Free. Comment puis-je vous aider ?", is_user=False)
 
     # If the user has submitted a question
@@ -59,10 +60,10 @@ def main():
         with st.spinner("Je réflechis..."):
             if mistral == 'No, run locally':    # run with local LLM
                 response, doc = lch.main(
-                    user_input, st.session_state.messages, previous_doc, llm, gpu)
+                    user_input, st.session_state.messages, st.session_state['previous_doc'], llm, gpu)
             else:
                 response, doc = lch.main(       # run with Mistral API
-                    user_input, st.session_state.messages, previous_doc=previous_doc, llm=llm, API_KEY=API_KEY)
+                    user_input, st.session_state.messages, previous_doc=st.session_state['previous_doc'], llm=llm, API_KEY=API_KEY)
             st.session_state.messages.append(HumanMessage(content=user_input))
 
             # to deal with different response types depending on the type of LLM (local, or api)
@@ -72,7 +73,8 @@ def main():
             else:
                 st.session_state.messages.append(
                     AIMessage(content=response.content))
-        previous_doc = doc  # keep track of the previous doc for the next query
+        # keep track of the previous doc for the next query
+        st.session_state['previous_doc'] = str(doc)
 
     # Refresh the chat area
     messages = st.session_state.get('messages', [])
@@ -84,7 +86,7 @@ def main():
 
     if reset_btn:
         st.session_state.messages.clear()
-        previous_doc = []
+        previous_doc = ""
         user_input = ""
 
 
